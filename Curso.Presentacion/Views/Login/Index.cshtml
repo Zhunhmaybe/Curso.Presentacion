@@ -1,0 +1,28 @@
+﻿@model ViewModelLogin
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Iniciar Sesión</h2>
+
+<form asp-action="PostLogin" method="post">
+    <div>
+        <label>Usuario</label>
+        <input asp-for="Usuario" class="form-control" required />
+    </div>
+    <div>
+        <label>Contraseña</label>
+        <input asp-for="Contrasena" type="password" class="form-control" required />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationSummary()
+        </div>
+    }
+</form>
