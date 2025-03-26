@@ -31,6 +31,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddNotyf(config =>
 {
     config.DurationInSeconds = 10;

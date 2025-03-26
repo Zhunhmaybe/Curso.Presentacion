@@ -8,17 +8,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using System.Text;
 
 namespace Curso.Presentacion.Controllers
 {
     public class LoginController : Controller
     {
         private readonly ILoginService _loginService;
+        private readonly IEmailService _EmailService;
         public INotyfService _notifyService { get; }
-        public LoginController(ILoginService loginService, INotyfService notifyService)
+        public LoginController(ILoginService loginService, INotyfService notifyService, IEmailService EmailService)
         {
             _loginService = loginService;
             _notifyService = notifyService;
+            _EmailService=EmailService;
         }
 
         public ActionResult Index()
@@ -46,7 +49,7 @@ namespace Curso.Presentacion.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostLogin(ViewModelLogin Data)
+        public async Task<ActionResult> PostLogin (ViewModelLogin Data)//ModelLogin es el modelo que vamis a acupar
         {
             bool result = await _loginService.PostLogin(Data.Contrasena, Data.Usuario);
             if (result == false)
@@ -64,9 +67,17 @@ namespace Curso.Presentacion.Controllers
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "cards", "Index.html");
+            string emailContent=System.IO.File.ReadAllText(filePath,Encoding.UTF8);
 
+            _EmailService.SendEmail(Data.Usuario, "Prueba", emailContent);
             _notifyService.Success("Bienvenido a la plataforma");
             return RedirectToAction("Privacy", "Home");
+        }
+        public async Task<IActionResult> Salir()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Privacy", "Login");
         }
 
 

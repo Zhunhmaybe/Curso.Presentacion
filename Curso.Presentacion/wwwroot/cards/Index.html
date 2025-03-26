@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenida</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f3c6e2, #d6c3f9);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .welcome-card {
+            background-color: #fff0f6;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+            .welcome-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .welcome-card h2 {
+                color: #9c27b0;
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+
+            .welcome-card p {
+                font-size: 18px;
+                color: #6a1b9a;
+                margin-top: 5px;
+            }
+
+        .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background-color: #ce93d8;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-home:hover {
+                background-color: #ba68c8;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-card">
+        <div class="emoji">💖</div>
+        <h2>Well cume, <span id="user-name">Usuario</span></h2>
+        <p>🌸 Nos alegra tenerte de vuelta en la plataforma</p>
+        <a href="/" class="btn-home">Ir al inicio</a>
+    </div>
+
+    <script>
+        // Si quieres que el nombre del usuario se ponga dinámicamente:
+        const params = new URLSearchParams(window.location.search);
+        const user = params.get("nombre");
+        if (user) {
+            document.getElementById("user-name").innerText = user;
+        }
+    </script>
+
+</body>
+</html>
