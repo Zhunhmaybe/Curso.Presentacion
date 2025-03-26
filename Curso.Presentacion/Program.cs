@@ -4,7 +4,8 @@ using Curso.Servicios;
 using Curso.Data;
 using Curso.Servicios.interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies; // 👈 Asegúrate de incluir esto
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection; // 👈 Asegúrate de incluir esto
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddHostedService<NotificationService>();
 builder.Services.AddNotyf(config =>
 {
     config.DurationInSeconds = 10;
