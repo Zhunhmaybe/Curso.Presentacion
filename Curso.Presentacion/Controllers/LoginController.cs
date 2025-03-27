@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Curso.Presentacion.Controllers
 {

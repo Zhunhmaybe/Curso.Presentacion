@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Base de datos
 builder.Services.AddDbContext<Curso.Data.Dbcontext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext")
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Dbcontext")
         ?? throw new InvalidOperationException("Connection string 'DbContext' not found.")));
 
 // Autenticación por cookies 👇
@@ -19,7 +19,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.Cookie.Name = "Login";
-        options.LoginPath = "/Login/Index";
+        options.LoginPath = "/Login";
         options.AccessDeniedPath = "/Shared/Error";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Curso.Data.Dbcontext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext") ?? throw new InvalidOperationException("Connection string 'DbContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Dbcontext") ?? throw new InvalidOperationException("Connection string 'DbContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllers();

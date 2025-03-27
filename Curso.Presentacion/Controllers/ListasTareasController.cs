@@ -3,22 +3,32 @@ using Curso.Entidades;
 using Curso.Servicios.interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Curso.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Curso.Presentacion.Controllers
 {
+    [Authorize]
     public class ListasTareasController : Controller
     {
         private readonly IApiService _aPIService;
-        public ListasTareasController(IApiService aPIService)
+        private readonly Data.Dbcontext _dbContext;
+        public ListasTareasController(IApiService aPIService, Data.Dbcontext dbContext)
         {
             _aPIService = aPIService;
+            _dbContext = dbContext;
         }
         // GET: ListasTareasController
         public async Task<ActionResult> Index()
         {
-            int id = 2;
-            var data = CRUD<ListasTareas>.Read(_aPIService.getApiUrl() + "/ListasTareas/ByID" + id);  //controlar aqui siempre las rutas y siempre publicas si cambias algo a la api
-            
+            string userNameClain = User.FindFirst(ClaimTypes.Name).Value;
+            var Usuario = await _dbContext.Usuarios.FirstOrDefaultAsync(o => o.Email == userNameClain);
+
+            int id = Usuario.UsuarioID;
+            var data = CRUD<ListasTareas>.Read(_aPIService.getApiUrl()+"/ListasTareas/ByID"+id);//controlar aqui siempre las rutas y siempre publicas si cambias algo a la api
+
             return View(data);
         }
 
