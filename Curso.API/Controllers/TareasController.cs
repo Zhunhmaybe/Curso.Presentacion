@@ -29,17 +29,11 @@ namespace Curso.API.Controllers
         }
 
         // GET: api/Tareas/5
-        [HttpGet("{id}")]
+        [HttpGet("ByID{id}")]
         public async Task<ActionResult<Tareas>> GetTareas(int id)
         {
-            var tareas = await _context.Tareas.FindAsync(id);
-
-            if (tareas == null)
-            {
-                return NotFound();
-            }
-
-            return tareas;
+            var tareas = _context.Tareas.Where(t => t.ListaID == id).ToList();
+            return Ok(tareas);
         }
 
         // PUT: api/Tareas/5

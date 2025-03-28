@@ -7,48 +7,42 @@ using System.Security.Claims;
 using Curso.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Curso.Presentacion.Models;
-using Curso.Servicios;
-using Newtonsoft.Json;
+
 
 namespace Curso.Presentacion.Controllers
 {
     [Authorize]
-    public class ListasTareasController : Controller
+    public class TareasController : Controller
     {
-        private readonly IApiService _APIService;
+        
+        private readonly IApiService _aPIService;
         private readonly Data.Dbcontext _dbContext;
-        public ListasTareasController(IApiService aPIService, Data.Dbcontext dbContext)
+        public TareasController(IApiService aPIService, Data.Dbcontext dbContext)
         {
-            _APIService = aPIService;
+            _aPIService = aPIService;
             _dbContext = dbContext;
         }
-        // GET: ListasTareasController
-        public async Task<ActionResult> Index()
+        // GET: TareasController
+        public async Task<ActionResult> Index(int id)
         {
-            string userNameClain = User.FindFirst(ClaimTypes.Name).Value;
-            var Usuario = await _dbContext.Usuarios.FirstOrDefaultAsync(o => o.Email == userNameClain);
-
-            
-            var data = CRUD<ViewModelListasTareas>.Read(_APIService.getApiUrl()+"/ListasTareas/ByID"+ Usuario.UsuarioID);//controlar aqui siempre las rutas y siempre publicas si cambias algo a la api
+            var data = CRUD<Tareas>.Read(_aPIService.getApiUrl() + "/Tareas");
 
             return View(data);
         }
 
-        // GET: ListasTareasController/Details/5
-        public async Task<ActionResult> Details(int id)
+        // GET: TareasController/Details/5
+        public ActionResult Details(int id)
         {
-            var data = CRUD<ViewModelListasTareas>.Read_ById(_APIService.getApiUrl() + "/ListasTareas/byId", id);//controlar aqui siempre las rutas y siempre publicas si cambias algo a la api            
-            return View(data);
+            return View();
         }
 
-        // GET: ListasTareasController/Create
+        // GET: TareasController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ListasTareasController/Create
+        // POST: TareasController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -63,13 +57,13 @@ namespace Curso.Presentacion.Controllers
             }
         }
 
-        // GET: ListasTareasController/Edit/5
+        // GET: TareasController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: ListasTareasController/Edit/5
+        // POST: TareasController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -84,13 +78,13 @@ namespace Curso.Presentacion.Controllers
             }
         }
 
-        // GET: ListasTareasController/Delete/5
+        // GET: TareasController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ListasTareasController/Delete/5
+        // POST: TareasController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

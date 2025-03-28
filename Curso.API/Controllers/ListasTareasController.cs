@@ -19,7 +19,7 @@ namespace Curso.API.Controllers
         public ListasTareasController(Dbcontext context)
         {
             _context = context;
-        }
+        }       
 
         // GET: api/ListasTareas
         [HttpGet]
@@ -30,12 +30,12 @@ namespace Curso.API.Controllers
 
 
         // GET: api/ListasTareas/5
-        [HttpGet("ByID{idUser}")]
-        public async Task<IActionResult> ListByUser(int idUser)
+        [HttpGet("ByID{id}")]
+        public async Task<IActionResult> ListByUser(int id)
         {
             var listasTareas = await _context.ListasTareas
             .Include(t => t.Tareas)
-            .Where(u => u.UsuarioID == idUser)
+            .Where(u => u.UsuarioID == id)
             .Select(item => new
             {
                 item.ListaID,
@@ -56,6 +56,43 @@ namespace Curso.API.Controllers
             .ToListAsync();
             return Ok(listasTareas);
         }
+
+        // GET: ListaTareas/Details/5
+        [HttpGet("byId/{id}")]
+        public async Task<IActionResult> Details(int? id)  //tenemos que ver el ListaID y no el del usuario
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var listasTareas = await _context.ListasTareas
+                .Include(t => t.Tareas)
+                .Where(t => t.ListaID == id)
+                .Select(item => new
+                {
+                    item.ListaID,
+                    item.UsuarioID,
+                    item.Nombre,
+                    Tareas = item.Tareas.Select(t => new
+                    {
+                        t.TareaID,
+                        t.ListaID,
+                        t.Descripcion,
+                        t.Estado,
+                    })
+
+                })
+                .FirstOrDefaultAsync(m => m.ListaID == id);
+
+            if (listasTareas == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(listasTareas);
+        }
+
 
         // PUT: api/ListasTareas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
